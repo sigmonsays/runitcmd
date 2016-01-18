@@ -2,7 +2,6 @@ package runit
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -60,23 +59,20 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 		return err
 	}
 
-	downfile := filepath.Join(sv.ServiceDir, "down")
 	if cfg.Disabled == false {
-		err = ioutil.WriteFile(downfile, []byte{}, 0400)
+
+		err = runit.Deactivate(sv.Name)
 		if err != nil {
 			return err
 		}
 	}
 	if cfg.Activated == false {
 
-		// activate the service
-		lst, err := os.Lstat(sv.ActiveDir)
-		if err != nil && os.IsNotExist(err) {
-			err = os.Symlink(sv.ServiceDir, sv.ActiveDir)
+		err = runit.Activate(sv.Name)
+		if err != nil {
+			return err
 		}
-		if err == nil && lst.Mode()&os.ModeSymlink == 0 {
-			log.Warnf("not a symlink: %s", sv.ActiveDir)
-		}
+
 	}
 
 	return err

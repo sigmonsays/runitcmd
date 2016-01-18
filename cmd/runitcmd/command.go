@@ -72,6 +72,22 @@ func (app *Application) runCommand(name, action string) {
 	var err error
 
 	switch action {
+
+	// commands
+	case "delete":
+		err = app.Runit.Delete(name)
+	case "activate":
+		err = app.Runit.Activate(name)
+	case "deactivate":
+		err = app.Runit.Deactivate(name)
+	case "disable":
+		err = app.Runit.Disable(name)
+	case "enable":
+		err = app.Runit.Enable(name)
+	case "reset":
+		err = app.Runit.Reset(name)
+
+	// sv tasks
 	case "up":
 		err = app.Runit.Up(name)
 	case "down":
@@ -119,6 +135,39 @@ func (app *Application) runCommand(name, action string) {
 	}
 }
 
+// some helpful commands
+func (app *Application) Delete(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "delete")
+	}
+}
+func (app *Application) Activate(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "activate")
+	}
+}
+func (app *Application) Deactivate(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "deactivate")
+	}
+}
+func (app *Application) Enable(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "enable")
+	}
+}
+func (app *Application) Disable(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "disable")
+	}
+}
+func (app *Application) Reset(c *cli.Context) {
+	for _, service := range app.MatchingServices(c) {
+		app.runCommand(service.Name, "reset")
+	}
+}
+
+// sv commands
 func (app *Application) Up(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
 		app.runCommand(service.Name, "up")

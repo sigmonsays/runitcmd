@@ -23,6 +23,7 @@ func main() {
 	c := cli.NewApp()
 	c.Name = "runitcmd"
 	c.Version = "0.0.1"
+	c.Usage = "manage runit services"
 	app := &Application{
 		App: c,
 	}
@@ -118,11 +119,18 @@ func main() {
 		initApply(app),
 		initStatus(app),
 
+		// more commands
+		makeCommand("delete", app.Delete),
+		makeCommand("activate", app.Activate),
+		makeCommand("deactivate", app.Deactivate),
+		makeCommand("enable", app.Enable),
+		makeCommand("disable", app.Disable),
+		makeCommand("reset", app.Reset),
+
 		// commands
 		makeCommand("up", app.Up),
 		makeCommand("down", app.Down),
 		makeCommand("pause", app.Pause),
-
 		makeCommand("cont", app.Cont),
 		makeCommand("hup", app.Cont),
 		makeCommand("alarm", app.Cont),
