@@ -31,8 +31,8 @@ func initList(app *Application) cli.Command {
 	return cmd
 }
 
-var timeLegend = []string{"d", "h", "m", "s"}
-var timeUnits = []int64{86400, 3600, 60, 1}
+var timeLegend = []string{"w", "d", "h", "m", "s"}
+var timeUnits = []int64{86400 * 7, 86400, 3600, 60, 1}
 
 func formatTime(seconds int64) string {
 	r := seconds
