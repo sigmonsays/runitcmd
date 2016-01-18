@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/codegangsta/cli"
@@ -30,6 +31,28 @@ func initList(app *Application) cli.Command {
 	return cmd
 }
 
+var timeLegend = []string{"d", "h", "m", "s"}
+var timeUnits = []int64{86400, 3600, 60, 1}
+
+func formatTime(seconds int64) string {
+	r := seconds
+	ret := []string{}
+	for n := 0; n < len(timeLegend); n++ {
+		u := timeUnits[n]
+		if r >= u {
+			ret = append(ret, fmt.Sprintf("%d%s", r/u, timeLegend[n]))
+			r = r - u*int64(r/u)
+		}
+		if r == 0 {
+			break
+		}
+	}
+	if len(ret) == 0 {
+		return "0s"
+	}
+	return strings.Join(ret, "")
+}
+
 func (app *Application) List(c *cli.Context) {
 	show_all := c.Bool("all")
 
@@ -55,7 +78,15 @@ func (app *Application) List(c *cli.Context) {
 			log.Warnf("Status: %s: %s", service.Name, err)
 			continue
 		}
-		fmt.Fprintf(tw, "%s \t running:%v \t pid:%d \t sec:%d\n", service.Name, st.Running, st.Pid, st.Seconds)
+		pid := "-"
+		state := "UP"
+		name := service.Name
+		if st.Running == false {
+			state = "DOWN"
+		} else {
+			pid = fmt.Sprintf("%d", st.Pid)
+		}
+		fmt.Fprintf(tw, "%s\t %s \t %s \t %s\n", name, state, pid, formatTime(st.Seconds))
 	}
 	tw.Flush()
 
