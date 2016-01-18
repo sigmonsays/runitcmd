@@ -55,7 +55,7 @@ func (app *Application) Create(c *cli.Context) {
 	log.Tracef("Create %s", name)
 	lcfg := runit.DefaultLoggingConfig()
 	if log_dir == "" {
-		lcfg.Directory = filepath.Join(app.Runit.ServiceDir, name)
+		lcfg.Directory = filepath.Join("/var/log", name)
 	} else {
 		lcfg.Directory = log_dir
 	}

@@ -7,8 +7,9 @@ import (
 
 func DefaultLoggingConfig() *LoggingConfig {
 	return &LoggingConfig{
-		Size: 1024 * 1024 * 50,
-		Num:  10,
+		Size:      1024 * 1024 * 50,
+		Num:       10,
+		Timestamp: 2,
 	}
 }
 
@@ -48,8 +49,23 @@ func (cfg *LoggingConfig) WriteRunFile(path string) error {
 	}
 	defer f.Close()
 
+	svlogd_flags := ""
+
+	switch cfg.Timestamp {
+	case 0:
+		break
+	case 1:
+		svlogd_flags += "-t"
+	case 2:
+		svlogd_flags += "-tt"
+	case 3:
+		svlogd_flags += "-ttt"
+	default:
+		log.Warnf("invalid timestamp value: %d", cfg.Timestamp)
+	}
+
 	fmt.Fprintf(f, "#!/bin/bash\n")
-	fmt.Fprintf(f, "exec svlogd -tt %s\n", cfg.Directory)
+	fmt.Fprintf(f, "exec svlogd %s %s\n", svlogd_flags, cfg.Directory)
 
 	err = os.MkdirAll(cfg.Directory, 0755)
 	if err != nil {
