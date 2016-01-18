@@ -58,6 +58,28 @@ func main() {
 
 	app.Commands = []cli.Command{
 		initList(app),
+
+		// commands
+		makeCommand("up", app.Up),
+		makeCommand("down", app.Down),
+		makeCommand("pause", app.Pause),
+
+		makeCommand("cont", app.Cont),
+		makeCommand("hup", app.Cont),
+		makeCommand("alarm", app.Cont),
+		makeCommand("interrupt", app.Cont),
+		makeCommand("quit", app.Quit),
+		makeCommand("usr1", app.Usr1),
+		makeCommand("usr2", app.Usr2),
+		makeCommand("term", app.Term),
+		makeCommand("kill", app.Kill),
+
+		// lsb
+		makeCommand("start", app.Start),
+		makeCommand("stop", app.Stop),
+		makeCommand("reload", app.Reload),
+		makeCommand("restart", app.Restart),
+		makeCommand("shutdown", app.Shutdown),
 	}
 
 	app.Run(os.Args)
