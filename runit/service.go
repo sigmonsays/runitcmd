@@ -24,10 +24,11 @@ func svNow() uint64 {
 }
 
 type ServiceStatus struct {
-	Enabled bool
-	Running bool
-	Pid     int
-	Seconds int64
+	Enabled   bool
+	Activated bool
+	Running   bool
+	Pid       int
+	Seconds   int64
 }
 
 type Service struct {
@@ -51,6 +52,14 @@ func (s *Service) Exists() bool {
 }
 
 func (s *Service) Enabled() bool {
+	_, err := os.Stat(filepath.Join(s.ActiveDir, "down"))
+	if err == nil {
+		return false
+	}
+	return true
+}
+
+func (s *Service) Activated() bool {
 	_, err := os.Stat(s.ActiveDir)
 	if err == nil {
 		return true
@@ -75,8 +84,9 @@ func (s *Service) Running() bool {
 
 func (s *Service) Status() (*ServiceStatus, error) {
 	st := &ServiceStatus{
-		Enabled: s.Enabled(),
-		Running: s.Running(),
+		Enabled:   s.Enabled(),
+		Activated: s.Activated(),
+		Running:   s.Running(),
 	}
 
 	statusfile := filepath.Join(s.ActiveDir, "supervise/status")

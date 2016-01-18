@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 	"regexp"
 
 	"github.com/codegangsta/cli"
@@ -27,21 +28,41 @@ func (app *Application) MatchingServices(c *cli.Context) []*runit.Service {
 		log.Warnf("ListServices: %s", err)
 		return nil
 	}
+	// TODO: Make this an option?
+	use_regex := false
+
+	var matchFn func(name string) bool
 	for n := 0; n < len(args); n++ {
 		pattern := args.Get(n)
 
-		match, err := regexp.Compile(pattern)
-		if err != nil {
-			log.Warnf("pattern %s: %s", pattern, err)
-			return nil
+		if use_regex {
+			match, err := regexp.Compile(pattern)
+			if err != nil {
+				log.Warnf("pattern %s: %s", pattern, err)
+				return nil
+			}
+			matchFn = func(name string) bool {
+				return match.MatchString(name)
+			}
+		} else {
+			matchFn = func(name string) bool {
+				matched, _ := filepath.Match(pattern, name)
+				return matched
+			}
 		}
 
+		seen := make(map[string]bool, 0)
+		var found bool
+
 		for _, service := range all_services {
-			if match.MatchString(service.Name) == false {
+			if matchFn(service.Name) == false {
 				continue
 			}
-			// TODO: de-duplicate ?
+			if _, found = seen[service.Name]; found {
+				continue
+			}
 			services = append(services, service)
+			seen[service.Name] = true
 		}
 	}
 	return services

@@ -2,6 +2,8 @@
 
 manage runit
 
+# features
+- multiple job matching via patterns
 
 # install
 

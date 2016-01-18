@@ -116,6 +116,7 @@ func main() {
 		initList(app),
 		initCreate(app),
 		initApply(app),
+		initStatus(app),
 
 		// commands
 		makeCommand("up", app.Up),
