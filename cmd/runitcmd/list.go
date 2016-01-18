@@ -70,7 +70,7 @@ func (app *Application) List(c *cli.Context) {
 		if service.Exists() == false {
 			continue
 		}
-		if show_all == false && service.Enabled() == false {
+		if show_all == false && service.Activated() == false {
 			continue
 		}
 		st, err := service.Status()

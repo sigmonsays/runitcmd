@@ -136,5 +136,6 @@ func (runit *Runit) Enable(name string) error {
 }
 
 func (runit *Runit) Reset(name string) error {
+
 	return nil
 }
