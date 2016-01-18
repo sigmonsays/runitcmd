@@ -115,6 +115,7 @@ func main() {
 	app.Commands = []cli.Command{
 		initList(app),
 		initCreate(app),
+		initApply(app),
 
 		// commands
 		makeCommand("up", app.Up),

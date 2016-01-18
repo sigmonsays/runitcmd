@@ -1,47 +1,12 @@
 package main
 
 import (
-	"os/exec"
+	"fmt"
 	"regexp"
 
 	"github.com/codegangsta/cli"
 	"github.com/sigmonsays/runitcmd/runit"
 )
-
-type simpleCommand struct {
-	service string
-	command string
-}
-
-func (s *simpleCommand) run() error {
-
-	cmdline := []string{
-		"sv",
-		s.command, s.service,
-	}
-	log.Tracef("cmdline %s", cmdline)
-
-	cmd := exec.Command(cmdline[0], cmdline[1:]...)
-	err := cmd.Start()
-	if err != nil {
-		return err
-	}
-
-	err = cmd.Wait()
-
-	return err
-}
-
-func runCommand(service, command string) {
-	cmd := &simpleCommand{
-		service: service,
-		command: command,
-	}
-	err := cmd.run()
-	if err != nil {
-		log.Warnf("%s %s: %s", command, service, err)
-	}
-}
 
 func makeCommand(name string, fn func(*cli.Context)) cli.Command {
 	cmd := cli.Command{
@@ -82,95 +47,146 @@ func (app *Application) MatchingServices(c *cli.Context) []*runit.Service {
 	return services
 }
 
+func (app *Application) runCommand(name, action string) {
+	var err error
+
+	switch action {
+	case "up":
+		err = app.Runit.Up(name)
+	case "down":
+		err = app.Runit.Down(name)
+	case "once":
+		err = app.Runit.Once(name)
+	case "pause":
+		err = app.Runit.Pause(name)
+	case "cont":
+		err = app.Runit.Cont(name)
+	case "hup":
+		err = app.Runit.Hup(name)
+	case "alarm":
+		err = app.Runit.Alarm(name)
+	case "interrupt":
+		err = app.Runit.Interrupt(name)
+	case "quit":
+		err = app.Runit.Quit(name)
+	case "usr1":
+		err = app.Runit.Usr1(name)
+	case "usr2":
+		err = app.Runit.Usr2(name)
+	case "term":
+		err = app.Runit.Term(name)
+	case "kill":
+		err = app.Runit.Kill(name)
+	// lsb
+	case "start":
+		err = app.Runit.Start(name)
+	case "stop":
+		err = app.Runit.Stop(name)
+	case "reload":
+		err = app.Runit.Reload(name)
+	case "restart":
+		err = app.Runit.Restart(name)
+	case "shutdown":
+		err = app.Runit.Shutdown(name)
+
+	default:
+		err = fmt.Errorf("unknown action: %s", action)
+	}
+
+	if err != nil {
+		log.Warnf("%s %s: %s", name, action, err)
+	}
+}
+
 func (app *Application) Up(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "up")
+		app.runCommand(service.Name, "up")
 	}
 }
 func (app *Application) Down(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "down")
+		app.runCommand(service.Name, "down")
 	}
 }
 func (app *Application) Once(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "once")
+		app.runCommand(service.Name, "once")
 	}
 }
 func (app *Application) Pause(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "pause")
+		app.runCommand(service.Name, "pause")
 	}
 }
 func (app *Application) Cont(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "cont")
+		app.runCommand(service.Name, "cont")
 	}
 }
 func (app *Application) Hup(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "hup")
+		app.runCommand(service.Name, "hup")
 	}
 }
 func (app *Application) Alarm(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "alarm")
+		app.runCommand(service.Name, "alarm")
 	}
 }
 func (app *Application) Interrupt(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "interrupt")
+		app.runCommand(service.Name, "interrupt")
 	}
 }
 func (app *Application) Quit(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "quit")
+		app.runCommand(service.Name, "quit")
 	}
 }
 func (app *Application) Usr1(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "1")
+		app.runCommand(service.Name, "1")
 	}
 }
 func (app *Application) Usr2(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "2")
+		app.runCommand(service.Name, "2")
 	}
 }
 func (app *Application) Term(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "term")
+		app.runCommand(service.Name, "term")
 	}
 }
 func (app *Application) Kill(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "kill")
+		app.runCommand(service.Name, "kill")
 	}
 }
 
 // lsb compatible
 func (app *Application) Start(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "start")
+		app.runCommand(service.Name, "start")
 	}
 }
 func (app *Application) Stop(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "stop")
+		app.runCommand(service.Name, "stop")
 	}
 }
 func (app *Application) Reload(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "reload")
+		app.runCommand(service.Name, "reload")
 	}
 }
 func (app *Application) Restart(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "restart")
+		app.runCommand(service.Name, "restart")
 	}
 }
 func (app *Application) Shutdown(c *cli.Context) {
 	for _, service := range app.MatchingServices(c) {
-		runCommand(service.Name, "shutdown")
+		app.runCommand(service.Name, "shutdown")
 	}
 }

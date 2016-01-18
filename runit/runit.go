@@ -1,7 +1,6 @@
 package runit
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -66,74 +65,4 @@ func (runit *Runit) ListServices() ([]*Service, error) {
 	}
 
 	return services, nil
-}
-
-type ServiceConfig struct {
-	Name     string
-	Exec     string
-	Disabled bool
-	Logging  *LoggingConfig
-
-	// helpers
-	RedirectStderr bool
-	Env            map[string]string
-	ExportEnv      map[string]string
-}
-
-func (runit *Runit) Create(cfg *ServiceConfig) error {
-	sv := runit.GetService(cfg.Name)
-	if sv.Exists() {
-		return fmt.Errorf("service exists")
-	}
-
-	// create directories
-	err := os.MkdirAll(sv.ServiceDir+"/log", 0755)
-	if err != nil {
-		return err
-	}
-
-	// write the run file
-	runfile := filepath.Join(sv.ServiceDir, "run")
-	f, err := os.Create(runfile)
-	if err != nil {
-		return err
-	}
-	fmt.Fprintf(f, "#!/bin/bash\n")
-	if cfg.RedirectStderr {
-		fmt.Fprintf(f, "exec 2>&1\n")
-	}
-	for k, v := range cfg.Env {
-		fmt.Fprintf(f, "%s=%s\n", k, v)
-	}
-	for k, v := range cfg.ExportEnv {
-		fmt.Fprintf(f, "export %s=%s\n", k, v)
-	}
-	fmt.Fprintf(f, "exec %s\n", cfg.Exec)
-	f.Chmod(0755)
-	f.Close()
-
-	// write the log/run file
-	logrun := filepath.Join(sv.ServiceDir, "log/run")
-
-	err = cfg.Logging.WriteRunFile(logrun)
-	if err != nil {
-		return err
-	}
-
-	// write the log/config file
-	logconfig := filepath.Join(sv.ServiceDir, "log/config")
-	err = cfg.Logging.WriteConfigFile(logconfig)
-	if err != nil {
-		return err
-	}
-
-	if cfg.Disabled {
-		return nil
-	}
-
-	// activate the service
-	err = os.Symlink(sv.ServiceDir, sv.ActiveDir)
-
-	return err
-
 }

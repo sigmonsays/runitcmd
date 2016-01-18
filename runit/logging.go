@@ -17,28 +17,29 @@ type LoggingConfig struct {
 	Directory string
 
 	// max file size in bytes
-	Size int
+	Size int `yaml:"size,omitempty"`
 
 	// number of old log files to keep. 0 means do not remove
-	Num int
+	Num int `yaml:"num,omitempty"`
 
 	// minimum number of log files
-	Min int
+	Min int `yaml:"min,omitempty"`
 
 	// empty after a period of time
-	Timeout int
+	Timeout int `yaml:"timeout,omitempty"`
 
-	Processor []string
+	Processor []string `yaml:"processor,omitempty"`
 
-	UdpAddress []string
-	TcpAddress []string
+	UdpAddress []string `yaml:"udp_address,omitempty"`
 
-	Prefix string
+	TcpAddress []string `yaml:"tcp_address,omitempty"`
+
+	Prefix string `yaml:"prefix,omitempty"`
 
 	// TODO: pattern selection
 
 	// controls the timestamp format, 0 is disabled, 1 is -t, 2 is -tt, 3 is -ttt (see man svlogd)
-	Timestamp int
+	Timestamp int `yaml:"timestamp,omitempty"`
 }
 
 func (cfg *LoggingConfig) WriteRunFile(path string) error {

@@ -65,6 +65,7 @@ func (app *Application) Create(c *cli.Context) {
 		Exec:           exec,
 		Logging:        lcfg,
 		Disabled:       disabled,
+		Activated:      true,
 		RedirectStderr: true,
 	}
 
