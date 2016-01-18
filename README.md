@@ -3,7 +3,9 @@
 manage runit
 
 # features
-- multiple job matching via patterns
+- manage multiple service matching via patterns
+- easily create and manage runit service
+- import/export service configuration
 
 # install
 
