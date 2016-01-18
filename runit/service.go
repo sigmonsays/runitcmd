@@ -40,6 +40,16 @@ func (s *Service) String() string {
 	return fmt.Sprintf("service(name=%s dir=%s/%s)", s.Name, s.ActiveDir, s.ServiceDir)
 }
 
+func (s *Service) Exists() bool {
+	runfile := filepath.Join(s.ServiceDir, "run")
+	_, err := os.Stat(runfile)
+
+	if err == nil {
+		return true
+	}
+	return false
+}
+
 func (s *Service) Enabled() bool {
 	_, err := os.Stat(s.ActiveDir)
 	if err == nil {

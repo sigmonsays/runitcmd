@@ -75,6 +75,7 @@ func (app *Application) MatchingServices(c *cli.Context) []*runit.Service {
 			if match.MatchString(service.Name) == false {
 				continue
 			}
+			// TODO: de-duplicate ?
 			services = append(services, service)
 		}
 	}
