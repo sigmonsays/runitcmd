@@ -44,6 +44,9 @@ func (app *Application) List(c *cli.Context) {
 	tw := new(tabwriter.Writer)
 	tw.Init(os.Stdout, 0, 8, 0, '\t', 0)
 	for _, service := range services {
+		if service.Exists() == false {
+			continue
+		}
 		if show_all == false && service.Enabled() == false {
 			continue
 		}

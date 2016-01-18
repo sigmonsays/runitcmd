@@ -81,6 +81,10 @@ func (s *Service) Status() (*ServiceStatus, error) {
 
 	statusfile := filepath.Join(s.ActiveDir, "supervise/status")
 
+	if _, err := os.Stat(statusfile); err != nil && os.IsNotExist(err) {
+		return st, nil
+	}
+
 	status, err := ioutil.ReadFile(statusfile)
 	if err != nil {
 		return nil, err
