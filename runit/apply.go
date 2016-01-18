@@ -59,8 +59,7 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 		return err
 	}
 
-	if cfg.Disabled == false {
-
+	if cfg.Disabled {
 		err = runit.Deactivate(sv.Name)
 		if err != nil {
 			return err

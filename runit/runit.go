@@ -92,7 +92,10 @@ func (runit *Runit) Activate(name string) error {
 	// activate the service
 	lst, err := os.Lstat(sv.ActiveDir)
 	if err != nil && os.IsNotExist(err) {
-		err = os.Symlink(sv.ServiceDir, sv.ActiveDir)
+		serr := os.Symlink(sv.ServiceDir, sv.ActiveDir)
+		if serr != nil {
+			return serr
+		}
 	}
 	if err == nil && lst.Mode()&os.ModeSymlink == 0 {
 		return fmt.Errorf("not a symlink: %s", sv.ActiveDir)
