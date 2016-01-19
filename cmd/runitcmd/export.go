@@ -10,7 +10,12 @@ func initExport(app *Application) cli.Command {
 	description := "export service"
 	usage := "export service"
 
-	flags := []cli.Flag{}
+	flags := []cli.Flag{
+		cli.BoolFlag{
+			Name:  "forgiving, f",
+			Usage: "be forgiving and try to parse the runit files",
+		},
+	}
 
 	cmd := cli.Command{
 		Name:        "export",
@@ -23,12 +28,21 @@ func initExport(app *Application) cli.Command {
 }
 
 func (app *Application) Export(c *cli.Context) {
+	forgiving := c.Bool("forgiving")
+
 	for _, service := range app.MatchingServices(c) {
 
 		cfg, err := app.Runit.Export(service.Name)
-		if err != nil {
+		if forgiving == false && err != nil {
 			log.Warnf("export %s: %s", service.Name, err)
 			continue
+		}
+		if forgiving && err != nil {
+			cfg, err = app.Runit.LoadFromDisk(service.Name)
+			if err != nil {
+				log.Warnf("load service config %s: %s", service.Name, err)
+				continue
+			}
 		}
 
 		destfile := filepath.Join("./", service.Name+".yaml")
