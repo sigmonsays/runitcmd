@@ -24,6 +24,14 @@ func initCreate(app *Application) cli.Command {
 			Name:  "disabled, d",
 			Usage: "create service but do not enable it",
 		},
+		cli.BoolFlag{
+			Name:  "force, f",
+			Usage: "force update the service if it already exists",
+		},
+		cli.BoolFlag{
+			Name:  "restart, r",
+			Usage: "restart the service after creation if it already exists",
+		},
 	}
 
 	cmd := cli.Command{
@@ -40,6 +48,8 @@ func (app *Application) Create(c *cli.Context) {
 	args := c.Args()
 	name := args.First()
 	exec := c.String("exec")
+	force := c.Bool("force")
+	restart := c.Bool("restart")
 	disabled := c.Bool("disabled")
 	log_dir := c.String("log-dir")
 
@@ -69,7 +79,12 @@ func (app *Application) Create(c *cli.Context) {
 		RedirectStderr: true,
 	}
 
-	err := app.Runit.Create(cfg)
+	copts := &runit.CreateOptions{
+		Force:   force,
+		Restart: restart,
+	}
+
+	err := app.Runit.Create2(cfg, copts)
 	if err != nil {
 		log.Warnf("Create %s: %s", name, err)
 	}
