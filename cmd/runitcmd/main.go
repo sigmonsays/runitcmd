@@ -118,6 +118,7 @@ func main() {
 		initCreate(app),
 		initApply(app),
 		initStatus(app),
+		initImport(app),
 		initExport(app),
 
 		// more commands
