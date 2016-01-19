@@ -12,7 +12,7 @@ manage runit
 
 Assuming you have a working go environment
 
-    go get github.com/sigmonsays/runitcmd/cmd/runitcmd
+    go get -u github.com/sigmonsays/runitcmd/cmd/runitcmd
 
 # configuration
 
