@@ -1,0 +1,10 @@
+name: job1
+exec: sleep 3600
+disabled: false
+activated: true
+logging:
+  directory: /var/log/job1
+  size: 52428800
+  num: 10
+  timestamp: 2
+redirect_stderr: true

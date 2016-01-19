@@ -118,6 +118,7 @@ func main() {
 		initCreate(app),
 		initApply(app),
 		initStatus(app),
+		initExport(app),
 
 		// more commands
 		makeCommand("delete", app.Delete),
