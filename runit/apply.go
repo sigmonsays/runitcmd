@@ -38,18 +38,22 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 	// write the log/run file
 	logrun := filepath.Join(sv.ServiceDir, "log/run")
 
+	if cfg.Logging == nil {
+		cfg.Logging = &LoggingConfig{
+			Directory: filepath.Join("/var/log", sv.Name),
+		}
+	}
+
 	err = cfg.Logging.WriteRunFile(logrun)
 	if err != nil {
 		return err
 	}
 
-	if cfg.Logging != nil {
-		// write the log/config file
-		logconfig := filepath.Join(sv.ServiceDir, "log/config")
-		err = cfg.Logging.WriteConfigFile(logconfig)
-		if err != nil {
-			return err
-		}
+	// write the log/config file
+	logconfig := filepath.Join(sv.ServiceDir, "log/config")
+	err = cfg.Logging.WriteConfigFile(logconfig)
+	if err != nil {
+		return err
 	}
 
 	// write the configuration down
