@@ -35,7 +35,7 @@ func (runit *Runit) Create2(cfg *ServiceConfig, opts *CreateOptions) error {
 		return err
 	}
 
-	if opts.Restart {
+	if opts.Restart && sv.Running() {
 		err = runit.Restart(cfg.Name)
 	}
 
