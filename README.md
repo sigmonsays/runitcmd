@@ -14,6 +14,10 @@ Assuming you have a working go environment
 
     go get -u github.com/sigmonsays/runitcmd/cmd/runitcmd
 
+To install for your system
+
+    GOPATH=/ go get -u github.com/sigmonsays/runitcmd/cmd/runitcmd
+
 # configuration
 
 configuration is optional and sane defaults will be used when no configuration is present
