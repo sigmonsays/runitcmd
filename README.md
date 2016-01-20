@@ -16,7 +16,8 @@ Assuming you have a working go environment
 
 To install for your system
 
-    GOPATH=/ go get -u github.com/sigmonsays/runitcmd/cmd/runitcmd
+    sudo -E GOPATH=/ go get -u github.com/sigmonsays/runitcmd/cmd/runitcmd
+
 
 # configuration
 
