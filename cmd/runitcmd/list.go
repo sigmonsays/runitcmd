@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"text/tabwriter"
 
 	"github.com/codegangsta/cli"
+
+	"github.com/sigmonsays/runitcmd/runit"
 )
 
 func initList(app *Application) cli.Command {
@@ -53,6 +56,35 @@ func formatTime(seconds int64) string {
 	return strings.Join(ret, "")
 }
 
+type SortBy func(s1, s2 *runit.Service) bool
+
+func (me SortBy) Sort(services []*runit.Service) {
+	ps := &ServiceSort{
+		services: services,
+		by:       me,
+	}
+	sort.Sort(ps)
+}
+
+type ServiceSort struct {
+	services []*runit.Service
+	by       func(s1, s2 *runit.Service) bool
+}
+
+func (s *ServiceSort) Len() int {
+	return len(s.services)
+}
+func (s *ServiceSort) Swap(i, j int) {
+	s.services[i], s.services[j] = s.services[j], s.services[i]
+}
+func (s *ServiceSort) Less(i, j int) bool {
+	return s.by(s.services[i], s.services[j])
+}
+
+func NameSort(s1, s2 *runit.Service) bool {
+	return s1.Name < s2.Name
+}
+
 func (app *Application) List(c *cli.Context) {
 	show_all := c.Bool("all")
 
@@ -64,8 +96,11 @@ func (app *Application) List(c *cli.Context) {
 		return
 	}
 
+	SortBy(NameSort).Sort(services)
+
 	tw := new(tabwriter.Writer)
 	tw.Init(os.Stdout, 0, 8, 0, '\t', 0)
+
 	for _, service := range services {
 		if service.Exists() == false {
 			continue
