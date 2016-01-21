@@ -16,6 +16,8 @@ type ServiceConfig struct {
 	RedirectStderr bool              `yaml:"redirect_stderr"`
 	Env            map[string]string `yaml:"env,omitempty"`
 	Export         map[string]string `yaml:"export,omitempty"`
+
+	Script []string `yaml:"-"`
 }
 
 func (c *ServiceConfig) LoadFile(path string) error {

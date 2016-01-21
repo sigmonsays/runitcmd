@@ -5,12 +5,21 @@ import (
 )
 
 func DefaultCreateOptions() *CreateOptions {
-	return &CreateOptions{}
+	return &CreateOptions{
+		Script: make([]string, 0),
+	}
 }
 
 type CreateOptions struct {
 	Force   bool
 	Restart bool
+
+	Script []string
+}
+
+func (opts *CreateOptions) WithScript(lines []string) *CreateOptions {
+	opts.Script = append(opts.Script, lines...)
+	return opts
 }
 
 func (runit *Runit) Create(cfg *ServiceConfig) error {

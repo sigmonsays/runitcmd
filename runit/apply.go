@@ -31,6 +31,7 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 	for k, v := range cfg.Export {
 		fmt.Fprintf(f, "export %s=%s\n", k, v)
 	}
+
 	fmt.Fprintf(f, "exec %s\n", cfg.Exec)
 	f.Chmod(0755)
 	f.Close()
@@ -40,7 +41,7 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 
 	if cfg.Logging == nil {
 		cfg.Logging = &LoggingConfig{
-			Directory: filepath.Join("/var/log", sv.Name),
+			Directory: filepath.Join(DefaultLogDir, sv.Name),
 		}
 	}
 

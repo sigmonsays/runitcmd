@@ -7,10 +7,16 @@ import (
 	"path/filepath"
 )
 
+const (
+	DefaultServiceDir = "/etc/sv"
+	DefaultActiveDir  = "/etc/service"
+	DefaultLogDir     = "/var/log"
+)
+
 func DefaultRunitConfig() *RunitConfig {
 	return &RunitConfig{
-		ServiceDir: "/etc/sv",
-		ActiveDir:  "/etc/service",
+		ServiceDir: DefaultServiceDir,
+		ActiveDir:  DefaultActiveDir,
 	}
 }
 
