@@ -6,22 +6,35 @@ import (
 	"os"
 
 	"gopkg.in/yaml.v2"
+
+	"github.com/sigmonsays/runitcmd/runit"
 )
 
 var defaultConfigString = `
 # default configuration
-log_directory: /var/log
+sudo: false
+logging:
+   directory: /var/log
+   max_size: 52428800
+   limit: 10
+   timeout: 0
+   minimum: 0
 `
 
 // end default configuration
 
-type ApplicationConfig struct {
-	// where to make log files for service
-	// ie: /var/log/[service]/current
-	LogDirectory string `yaml:"log_directory"`
+type Timestamp int
 
-	// do sudo
-	Sudo bool
+const (
+	TimestampNone = iota
+	TimestampPrecise
+	TimestampHuman1
+	TimestampHuman2
+)
+
+type ApplicationConfig struct {
+	Sudo    bool
+	Logging *runit.LoggingConfig `yaml:"logging"`
 }
 
 func (c *ApplicationConfig) LoadDefault() {

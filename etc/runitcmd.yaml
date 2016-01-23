@@ -1,0 +1,9 @@
+
+# set to true to use sudo 
+sudo: false
+
+logging:
+  directory: /var/log/example
+  max_size: 52428800
+  number: 10
+  timestamp: 2

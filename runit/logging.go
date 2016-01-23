@@ -17,13 +17,13 @@ type LoggingConfig struct {
 	Directory string
 
 	// max file size in bytes
-	Size int `yaml:"size,omitempty"`
+	Size int `yaml:"max_size,omitempty"`
 
 	// number of old log files to keep. 0 means do not remove
-	Num int `yaml:"num,omitempty"`
+	Num int `yaml:"number,omitempty"`
 
 	// minimum number of log files
-	Min int `yaml:"min,omitempty"`
+	Min int `yaml:"minimum,omitempty"`
 
 	// empty after a period of time
 	Timeout int `yaml:"timeout,omitempty"`
