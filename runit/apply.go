@@ -36,6 +36,8 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 	f.Chmod(0755)
 	f.Close()
 
+	log.Tracef("run exec %s", cfg.Exec)
+
 	// write the log/run file
 	logrun := filepath.Join(sv.ServiceDir, "log/run")
 

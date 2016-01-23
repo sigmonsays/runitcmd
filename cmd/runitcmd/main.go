@@ -60,6 +60,7 @@ func main() {
 				continue
 			}
 
+			log.Tracef("Loading %s", config_file)
 			err = app.Conf.LoadYaml(config_file)
 			if err != nil {
 				log.Warnf("load %s: %s", config_file, err)

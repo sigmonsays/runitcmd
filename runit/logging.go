@@ -68,6 +68,8 @@ func (cfg *LoggingConfig) WriteRunFile(path string) error {
 	fmt.Fprintf(f, "#!/bin/bash\n")
 	fmt.Fprintf(f, "exec svlogd %s %s\n", svlogd_flags, cfg.Directory)
 
+	log.Tracef("log/run svlogd %s %s", svlogd_flags, cfg.Directory)
+
 	err = os.MkdirAll(cfg.Directory, 0755)
 	if err != nil {
 		return err
