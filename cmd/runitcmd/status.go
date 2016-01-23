@@ -38,5 +38,19 @@ func (app *Application) Status(c *cli.Context) {
 		fmt.Printf("enabled    %v\n", st.Enabled)
 		fmt.Printf("activated  %v\n", st.Activated)
 		fmt.Printf("\n")
+		if cfg, err := service.Config(); err == nil {
+			l := cfg.Logging
+			if l != nil {
+				fmt.Printf("logging:\n")
+				fmt.Printf("directory       %s\n", l.Directory)
+				fmt.Printf("max size        %d bytes\n", l.Size)
+				fmt.Printf("number          %d\n", l.Num)
+				fmt.Printf("timeout         %d seconds\n", l.Timeout)
+				fmt.Printf("minimum         %d\n", l.Min)
+				fmt.Printf("\n")
+			}
+		} else {
+			fmt.Printf("logging configuration unavailable\n")
+		}
 	}
 }

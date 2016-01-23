@@ -3,6 +3,7 @@ package runit
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
@@ -47,4 +48,14 @@ func (c *ServiceConfig) SaveFile(path string) error {
 
 	err = os.Rename(tmppath, path)
 	return err
+}
+
+func (s *Service) Config() (*ServiceConfig, error) {
+	cfgfile := filepath.Join(s.ServiceDir, "service.yaml")
+	c := &ServiceConfig{}
+	err := c.LoadFile(cfgfile)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
