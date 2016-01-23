@@ -29,6 +29,9 @@ wide configuration.
 example user configuration:
 
       sudo: true
-
+      logging:
+        directory: /opt/logs
+        number: 10
+        max_size: 52428800
 
 
