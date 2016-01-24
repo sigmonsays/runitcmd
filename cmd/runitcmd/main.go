@@ -28,8 +28,6 @@ func main() {
 		App: c,
 	}
 
-	rcfg := runit.DefaultRunitConfig()
-
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "level, l",
@@ -99,16 +97,23 @@ func main() {
 				os.Exit(0)
 
 			}
+
 		}
 
+		rcfg := runit.DefaultRunitConfig()
 		service_dir := c.String("service-dir")
 		active_dir := c.String("active-dir")
-		if service_dir != "" {
+		if service_dir == "" {
+			rcfg.ServiceDir = app.Conf.ServiceDir
+		} else {
 			rcfg.ServiceDir = service_dir
 		}
-		if active_dir != "" {
+		if active_dir == "" {
+			rcfg.ActiveDir = app.Conf.ActiveDir
+		} else {
 			rcfg.ActiveDir = active_dir
 		}
+
 		app.Runit = runit.NewRunit(rcfg)
 
 		return nil

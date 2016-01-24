@@ -12,6 +12,10 @@ import (
 
 var defaultConfigString = `
 # default configuration
+
+service_dir: /etc/sv
+active_dir: /etc/service
+
 sudo: false
 logging:
    directory: /var/log
@@ -33,8 +37,10 @@ const (
 )
 
 type ApplicationConfig struct {
-	Sudo    bool
-	Logging *runit.LoggingConfig `yaml:"logging"`
+	Sudo       bool
+	ServiceDir string               `yaml:"service_dir"`
+	ActiveDir  string               `yaml:"active_dir"`
+	Logging    *runit.LoggingConfig `yaml:"logging"`
 }
 
 func (c *ApplicationConfig) LoadDefault() {
