@@ -71,60 +71,68 @@ func (app *Application) MatchingServices(c *cli.Context) []*runit.Service {
 func (app *Application) runCommand(name, action string) {
 	var err error
 
+	sv := app.Runit.GetService(name)
+	if sv.Exists() == false {
+		log.Warnf("GetService %s: no such service", name)
+		return
+	}
+
+	svpath := sv.ActiveDir
+
 	switch action {
 
 	// commands
 	case "delete":
-		err = app.Runit.Delete(name)
+		err = app.Runit.Delete(svpath)
 	case "activate":
-		err = app.Runit.Activate(name)
+		err = app.Runit.Activate(svpath)
 	case "deactivate":
-		err = app.Runit.Deactivate(name)
+		err = app.Runit.Deactivate(svpath)
 	case "disable":
-		err = app.Runit.Disable(name)
+		err = app.Runit.Disable(svpath)
 	case "enable":
-		err = app.Runit.Enable(name)
+		err = app.Runit.Enable(svpath)
 	case "reset":
-		err = app.Runit.Reset(name)
+		err = app.Runit.Reset(svpath)
 
 	// sv tasks
 	case "up":
-		err = app.Runit.Up(name)
+		err = app.Runit.Up(svpath)
 	case "down":
-		err = app.Runit.Down(name)
+		err = app.Runit.Down(svpath)
 	case "once":
-		err = app.Runit.Once(name)
+		err = app.Runit.Once(svpath)
 	case "pause":
-		err = app.Runit.Pause(name)
+		err = app.Runit.Pause(svpath)
 	case "cont":
-		err = app.Runit.Cont(name)
+		err = app.Runit.Cont(svpath)
 	case "hup":
-		err = app.Runit.Hup(name)
+		err = app.Runit.Hup(svpath)
 	case "alarm":
-		err = app.Runit.Alarm(name)
+		err = app.Runit.Alarm(svpath)
 	case "interrupt":
-		err = app.Runit.Interrupt(name)
+		err = app.Runit.Interrupt(svpath)
 	case "quit":
-		err = app.Runit.Quit(name)
+		err = app.Runit.Quit(svpath)
 	case "usr1":
-		err = app.Runit.Usr1(name)
+		err = app.Runit.Usr1(svpath)
 	case "usr2":
-		err = app.Runit.Usr2(name)
+		err = app.Runit.Usr2(svpath)
 	case "term":
-		err = app.Runit.Term(name)
+		err = app.Runit.Term(svpath)
 	case "kill":
-		err = app.Runit.Kill(name)
+		err = app.Runit.Kill(svpath)
 	// lsb
 	case "start":
-		err = app.Runit.Start(name)
+		err = app.Runit.Start(svpath)
 	case "stop":
-		err = app.Runit.Stop(name)
+		err = app.Runit.Stop(svpath)
 	case "reload":
-		err = app.Runit.Reload(name)
+		err = app.Runit.Reload(svpath)
 	case "restart":
-		err = app.Runit.Restart(name)
+		err = app.Runit.Restart(svpath)
 	case "shutdown":
-		err = app.Runit.Shutdown(name)
+		err = app.Runit.Shutdown(svpath)
 
 	default:
 		err = fmt.Errorf("unknown action: %s", action)
