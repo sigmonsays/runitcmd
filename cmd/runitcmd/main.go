@@ -30,6 +30,10 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
+			Name:  "config, c",
+			Usage: "override configuration file",
+		},
+		cli.StringFlag{
 			Name:  "level, l",
 			Value: "WARN",
 			Usage: "change log level",
@@ -47,10 +51,18 @@ func main() {
 	app.Before = func(c *cli.Context) error {
 		gologging.SetLogLevel(c.String("level"))
 
+		config_file := c.String("config")
 		config_files := []string{
 			"/etc/runitcmd.yaml",
-			filepath.Join(os.Getenv("HOME"), ".runitcmd.yaml"),
 		}
+
+		user_config := filepath.Join(os.Getenv("HOME"), ".runitcmd.yaml")
+		if config_file == "" {
+			config_files = append(config_files, user_config)
+		} else {
+			config_files = []string{config_file}
+		}
+
 		app.Conf = GetDefaultConfig()
 		for _, config_file := range config_files {
 			_, err := os.Stat(config_file)
