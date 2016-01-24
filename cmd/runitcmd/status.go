@@ -37,8 +37,10 @@ func (app *Application) Status(c *cli.Context) {
 		fmt.Printf("seconds    %d (%s)\n", st.Seconds, formatTime(st.Seconds))
 		fmt.Printf("enabled    %v\n", st.Enabled)
 		fmt.Printf("activated  %v\n", st.Activated)
-		fmt.Printf("\n")
 		if cfg, err := service.Config(); err == nil {
+			fmt.Printf("exec       %s\n", cfg.Exec)
+			fmt.Printf("\n")
+
 			l := cfg.Logging
 			if l != nil {
 				fmt.Printf("logging:\n")
