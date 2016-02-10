@@ -35,8 +35,9 @@ func (runit *Runit) LoadFromDisk(name string) (*ServiceConfig, error) {
 		return nil, fmt.Errorf("not found")
 	}
 	cfg := &ServiceConfig{
-		Name:      name,
-		Activated: true,
+		Name:           name,
+		Activated:      true,
+		RedirectStderr: true,
 	}
 
 	// load the service/run file
@@ -56,6 +57,10 @@ func (runit *Runit) LoadFromDisk(name string) (*ServiceConfig, error) {
 			if strings.HasPrefix(sline, "exec ") {
 				cfg.Exec = sline[5:]
 				log.Infof("found exec %s", cfg.Exec)
+			} else if strings.HasPrefix(sline, "#!/") {
+				// ignore the sha-bang bang
+			} else {
+				cfg.Script += sline
 			}
 		}
 		f.Close()

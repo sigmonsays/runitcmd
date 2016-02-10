@@ -11,14 +11,16 @@ import (
 type ServiceConfig struct {
 	Name           string
 	Exec           string
-	Disabled       bool              `yaml:"disabled"`
+	Disabled       bool              `yaml:"disabled,omitempty"`
 	Activated      bool              `yaml:"activated"`
 	Logging        *LoggingConfig    `yaml:"logging,omitempty"`
-	RedirectStderr bool              `yaml:"redirect_stderr"`
+	RedirectStderr bool              `yaml:"redirect_stderr,omitempty"`
 	Env            map[string]string `yaml:"env,omitempty"`
 	Export         map[string]string `yaml:"export,omitempty"`
 
-	Script []string `yaml:"-"`
+	InlineScript []string `yaml:"-"`
+
+	Script string `yaml:"script,omitempty"`
 }
 
 func (c *ServiceConfig) LoadFile(path string) error {
