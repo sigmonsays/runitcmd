@@ -31,6 +31,13 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 	for k, v := range cfg.Export {
 		fmt.Fprintf(f, "export %s=%s\n", k, v)
 	}
+	for _, script := range cfg.InlineScript {
+		fmt.Fprint(f, script)
+	}
+
+	if cfg.Script != "" {
+		fmt.Fprintf(f, cfg.Script)
+	}
 
 	fmt.Fprintf(f, "exec %s\n", cfg.Exec)
 	f.Chmod(0755)

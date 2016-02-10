@@ -32,6 +32,8 @@ func (app *Application) Import(c *cli.Context) {
 			log.Warnf("import %s: %s", filename, err)
 			continue
 		}
+		log.Debugf("loaded %s configuration", filename)
+		log.Tracef("about to apply config %+v", cfg)
 
 		err = app.Runit.Apply(cfg)
 		if err != nil {
