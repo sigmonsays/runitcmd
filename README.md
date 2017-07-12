@@ -89,11 +89,18 @@ example user configuration:
 
 # Examples
 
-Setup a service
+Setup a service (and start it)
 
     runitcmd setup sleep --run 'sleep 3600'
 
+Stop/start service
 
+    runitcmd stop sleep
+    runitcmd start sleep
+
+Delete service
+
+    runitcmd delete sleep
 
 `EOF`
 
