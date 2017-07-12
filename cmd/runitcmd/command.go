@@ -77,62 +77,60 @@ func (app *Application) runCommand(name, action string) {
 		return
 	}
 
-	svpath := sv.ActiveDir
-
 	switch action {
 
 	// commands
 	case "delete":
-		err = app.Runit.Delete(svpath)
+		err = app.Runit.Delete(name)
 	case "activate":
-		err = app.Runit.Activate(svpath)
+		err = app.Runit.Activate(name)
 	case "deactivate":
-		err = app.Runit.Deactivate(svpath)
+		err = app.Runit.Deactivate(name)
 	case "disable":
-		err = app.Runit.Disable(svpath)
+		err = app.Runit.Disable(name)
 	case "enable":
-		err = app.Runit.Enable(svpath)
+		err = app.Runit.Enable(name)
 	case "reset":
-		err = app.Runit.Reset(svpath)
+		err = app.Runit.Reset(name)
 
 	// sv tasks
 	case "up":
-		err = app.Runit.Up(svpath)
+		err = app.Runit.Up(name)
 	case "down":
-		err = app.Runit.Down(svpath)
+		err = app.Runit.Down(name)
 	case "once":
-		err = app.Runit.Once(svpath)
+		err = app.Runit.Once(name)
 	case "pause":
-		err = app.Runit.Pause(svpath)
+		err = app.Runit.Pause(name)
 	case "cont":
-		err = app.Runit.Cont(svpath)
+		err = app.Runit.Cont(name)
 	case "hup":
-		err = app.Runit.Hup(svpath)
+		err = app.Runit.Hup(name)
 	case "alarm":
-		err = app.Runit.Alarm(svpath)
+		err = app.Runit.Alarm(name)
 	case "interrupt":
-		err = app.Runit.Interrupt(svpath)
+		err = app.Runit.Interrupt(name)
 	case "quit":
-		err = app.Runit.Quit(svpath)
+		err = app.Runit.Quit(name)
 	case "usr1":
-		err = app.Runit.Usr1(svpath)
+		err = app.Runit.Usr1(name)
 	case "usr2":
-		err = app.Runit.Usr2(svpath)
+		err = app.Runit.Usr2(name)
 	case "term":
-		err = app.Runit.Term(svpath)
+		err = app.Runit.Term(name)
 	case "kill":
-		err = app.Runit.Kill(svpath)
+		err = app.Runit.Kill(name)
 	// lsb
 	case "start":
-		err = app.Runit.Start(svpath)
+		err = app.Runit.Start(name)
 	case "stop":
-		err = app.Runit.Stop(svpath)
+		err = app.Runit.Stop(name)
 	case "reload":
-		err = app.Runit.Reload(svpath)
+		err = app.Runit.Reload(name)
 	case "restart":
-		err = app.Runit.Restart(svpath)
+		err = app.Runit.Restart(name)
 	case "shutdown":
-		err = app.Runit.Shutdown(svpath)
+		err = app.Runit.Shutdown(name)
 
 	default:
 		err = fmt.Errorf("unknown action: %s", action)
