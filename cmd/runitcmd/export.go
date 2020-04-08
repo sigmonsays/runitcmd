@@ -3,21 +3,21 @@ package main
 import (
 	"path/filepath"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli/v2"
 )
 
-func initExport(app *Application) cli.Command {
+func initExport(app *Application) *cli.Command {
 	description := "export service"
 	usage := "export service"
 
 	flags := []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "forgiving, f",
 			Usage: "be forgiving and try to parse the runit files",
 		},
 	}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "export",
 		Usage:       usage,
 		Description: description,
@@ -27,7 +27,7 @@ func initExport(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Export(c *cli.Context) {
+func (app *Application) Export(c *cli.Context) error {
 	forgiving := c.Bool("forgiving")
 
 	for _, service := range app.MatchingServices(c) {
@@ -52,4 +52,5 @@ func (app *Application) Export(c *cli.Context) {
 			continue
 		}
 	}
+	return nil
 }

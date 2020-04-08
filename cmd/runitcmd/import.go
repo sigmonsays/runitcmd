@@ -3,16 +3,16 @@ package main
 import (
 	"github.com/sigmonsays/runitcmd/runit"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli/v2"
 )
 
-func initImport(app *Application) cli.Command {
+func initImport(app *Application) *cli.Command {
 	description := "import service"
 	usage := "import service"
 
 	flags := []cli.Flag{}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "import",
 		Usage:       usage,
 		Description: description,
@@ -22,10 +22,10 @@ func initImport(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Import(c *cli.Context) {
+func (app *Application) Import(c *cli.Context) error {
 	filenames := c.Args()
 
-	for _, filename := range filenames {
+	for _, filename := range filenames.Slice() {
 		cfg := &runit.ServiceConfig{}
 		err := cfg.LoadFile(filename)
 		if err != nil {
@@ -42,4 +42,5 @@ func (app *Application) Import(c *cli.Context) {
 		}
 
 	}
+	return nil
 }

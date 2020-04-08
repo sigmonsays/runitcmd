@@ -4,22 +4,22 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/codegangsta/cli"
 	"github.com/sigmonsays/runitcmd/runit"
+	"github.com/urfave/cli/v2"
 )
 
-func initApply(app *Application) cli.Command {
+func initApply(app *Application) *cli.Command {
 	description := "update service"
 	usage := "update service"
 
 	flags := []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "restart, r",
 			Usage: "restart service after changes",
 		},
 	}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "apply",
 		Usage:       usage,
 		Description: description,
@@ -29,7 +29,7 @@ func initApply(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Apply(c *cli.Context) {
+func (app *Application) Apply(c *cli.Context) error {
 	args := c.Args()
 	filename := args.First()
 	restart := c.Bool("restart")
@@ -45,22 +45,22 @@ func (app *Application) Apply(c *cli.Context) {
 	err := cfg.LoadFile(filename)
 	if err != nil {
 		log.Warnf("LoadFile %s: %s", filename, err)
-		return
+		return err
 	}
 
 	err = app.Runit.Apply(cfg)
 	if err != nil {
 		log.Warnf("Create %s: %s", cfg.Name, err)
-		return
+		return err
 	}
 
 	if restart {
 		err = app.Runit.Restart(cfg.Name)
 		if err != nil {
 			log.Warnf("Restart %s: %s", cfg.Name, err)
-			return
+			return err
 		}
 
 	}
-
+	return nil
 }

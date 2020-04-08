@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/codegangsta/cli"
 	"github.com/sigmonsays/runitcmd/runit"
+	"github.com/urfave/cli/v2"
 
 	gologging "github.com/sigmonsays/go-logging"
 )
@@ -29,20 +29,20 @@ func main() {
 	}
 
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "config, c",
 			Usage: "override configuration file",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "level, l",
 			Value: "WARN",
 			Usage: "change log level",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "service-dir",
 			Usage: "change service dir",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "active-dir",
 			Usage: "change active service dir",
 		},
@@ -131,7 +131,7 @@ func main() {
 		return nil
 	}
 
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		initList(app),
 		initCreate(app),
 		initSetup(app),
