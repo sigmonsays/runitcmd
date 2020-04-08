@@ -3,16 +3,16 @@ package main
 import (
 	"fmt"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli/v2"
 )
 
-func initStatus(app *Application) cli.Command {
+func initStatus(app *Application) *cli.Command {
 	description := "get service status"
 	usage := "get service status"
 
 	flags := []cli.Flag{}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "status",
 		Aliases:     []string{"st"},
 		Usage:       usage,
@@ -23,7 +23,7 @@ func initStatus(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Status(c *cli.Context) {
+func (app *Application) Status(c *cli.Context) error {
 	for _, service := range app.MatchingServices(c) {
 		st, err := service.Status()
 		if err != nil {
@@ -55,4 +55,5 @@ func (app *Application) Status(c *cli.Context) {
 			fmt.Printf("logging configuration unavailable\n")
 		}
 	}
+	return nil
 }

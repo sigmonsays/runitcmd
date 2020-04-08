@@ -4,80 +4,80 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/codegangsta/cli"
 	"github.com/sigmonsays/runitcmd/runit"
+	"github.com/urfave/cli/v2"
 
 	gologging "github.com/sigmonsays/go-logging"
 )
 
 // for compatibility and legacy; use create instead
-func initSetup(app *Application) cli.Command {
+func initSetup(app *Application) *cli.Command {
 	description := "setup a service"
 	usage := "setup a service"
 
 	flags := []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "log-level, l",
 			Usage: "log level",
 			Value: "warn",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "verbose, v",
 			Usage: "be verbose",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "service-dir",
 			Usage: "service directory",
 			Value: runit.DefaultServiceDir,
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "active-service-dir",
 			Usage: "active service directory",
 			Value: runit.DefaultActiveDir,
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "log-dir",
 			Usage: "log to directory",
 		},
-		cli.BoolTFlag{
+		&cli.BoolFlag{
 			Name:  "enable, e",
 			Usage: "setup service and enable it",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "disable, d",
 			Usage: "setup service but do not enable it",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "run",
 			Usage: "run command",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "log-run",
 			Usage: "service log command",
 		},
-		cli.StringSliceFlag{
+		&cli.StringSliceFlag{
 			Name:  "script",
 			Usage: "additional lines to execute before run",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "restart, r",
 			Usage: "restart service",
 		},
-		cli.IntFlag{
+		&cli.IntFlag{
 			Name:  "uid, u",
 			Usage: "user id",
 		},
-		cli.IntFlag{
+		&cli.IntFlag{
 			Name:  "gid, g",
 			Usage: "group id",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "template, t",
 			Usage: "service template to use (does nothing, legacy only)",
 		},
 	}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "setup",
 		Usage:       usage,
 		Description: description,
@@ -87,7 +87,7 @@ func initSetup(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Setup(c *cli.Context) {
+func (app *Application) Setup(c *cli.Context) error {
 	log_level := c.String("log-level")
 	verbose := c.Bool("verbose")
 	service_dir := c.String("service-dir")
@@ -127,11 +127,11 @@ func (app *Application) Setup(c *cli.Context) {
 
 	if name == "" {
 		log.Errorf("service name is required")
-		return
+		return fmt.Errorf("service name is required")
 	}
 	if run == "" {
 		log.Errorf("run command is required")
-		return
+		return fmt.Errorf("run command is required")
 	}
 
 	if log_run != "" {
@@ -180,4 +180,5 @@ func (app *Application) Setup(c *cli.Context) {
 		log.Warnf("Create2 %s: %s", name, err)
 	}
 
+	return err
 }

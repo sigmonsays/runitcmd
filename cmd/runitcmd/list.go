@@ -7,23 +7,23 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli/v2"
 
 	"github.com/sigmonsays/runitcmd/runit"
 )
 
-func initList(app *Application) cli.Command {
+func initList(app *Application) *cli.Command {
 	description := "list services"
 	usage := "list services"
 
 	flags := []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "all, a",
 			Usage: "list all services",
 		},
 	}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "list",
 		Aliases:     []string{"ls"},
 		Usage:       usage,
@@ -85,7 +85,7 @@ func NameSort(s1, s2 *runit.Service) bool {
 	return s1.Name < s2.Name
 }
 
-func (app *Application) List(c *cli.Context) {
+func (app *Application) List(c *cli.Context) error {
 	show_all := c.Bool("all")
 
 	log.Tracef("list all:%v", show_all)
@@ -93,7 +93,7 @@ func (app *Application) List(c *cli.Context) {
 	services, err := app.Runit.ListServices()
 	if err != nil {
 		log.Warnf("ListServices: %s", err)
-		return
+		return err
 	}
 
 	SortBy(NameSort).Sort(services)
@@ -125,4 +125,5 @@ func (app *Application) List(c *cli.Context) {
 	}
 	tw.Flush()
 
+	return nil
 }

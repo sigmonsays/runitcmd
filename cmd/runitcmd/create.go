@@ -1,40 +1,41 @@
 package main
 
 import (
+	"fmt"
 	"path/filepath"
 
-	"github.com/codegangsta/cli"
 	"github.com/sigmonsays/runitcmd/runit"
+	"github.com/urfave/cli/v2"
 )
 
-func initCreate(app *Application) cli.Command {
+func initCreate(app *Application) *cli.Command {
 	description := "Create services"
 	usage := "Create services"
 
 	flags := []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "exec, e",
 			Usage: "execute command",
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "log-dir, l",
 			Usage: "log to directory",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "disabled, d",
 			Usage: "create service but do not enable it",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "force, f",
 			Usage: "force update the service if it already exists",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "restart, r",
 			Usage: "restart the service after creation if it already exists",
 		},
 	}
 
-	cmd := cli.Command{
+	cmd := &cli.Command{
 		Name:        "create",
 		Usage:       usage,
 		Description: description,
@@ -44,7 +45,7 @@ func initCreate(app *Application) cli.Command {
 	return cmd
 }
 
-func (app *Application) Create(c *cli.Context) {
+func (app *Application) Create(c *cli.Context) error {
 	args := c.Args()
 	name := args.First()
 	exec := c.String("exec")
@@ -55,11 +56,11 @@ func (app *Application) Create(c *cli.Context) {
 
 	if name == "" {
 		log.Errorf("service name is required")
-		return
+		return fmt.Errorf("service name is required")
 	}
 	if exec == "" {
 		log.Errorf("execute is required")
-		return
+		return fmt.Errorf("execute is required")
 	}
 
 	log.Tracef("Create %s", name)
@@ -89,4 +90,5 @@ func (app *Application) Create(c *cli.Context) {
 		log.Warnf("Create %s: %s", name, err)
 	}
 
+	return err
 }
