@@ -22,16 +22,19 @@ func initSetup(app *Application) *cli.Command {
 			Usage:   "service name",
 		},
 		&cli.BoolFlag{
-			Name:  "verbose, v",
-			Usage: "be verbose",
+			Name:    "verbose",
+			Aliases: []string{"v"},
+			Usage:   "be verbose",
 		},
 		&cli.BoolFlag{
-			Name:  "enable, e",
-			Usage: "setup service and enable it",
+			Name:    "enable",
+			Aliases: []string{"e"},
+			Usage:   "setup service and enable it",
 		},
 		&cli.BoolFlag{
-			Name:  "disable, d",
-			Usage: "setup service but do not enable it",
+			Name:    "disable",
+			Aliases: []string{"d"},
+			Usage:   "setup service but do not enable it",
 		},
 		&cli.StringFlag{
 			Name:    "run",
@@ -43,11 +46,12 @@ func initSetup(app *Application) *cli.Command {
 			Usage: "service log command",
 		},
 		&cli.StringSliceFlag{
-			Name:  "script",
-			Usage: "additional lines to execute before run",
+			Name:    "script",
+			Aliases: []string{"s"},
+			Usage:   "additional lines to execute before run",
 		},
 		&cli.BoolFlag{
-			Name:  "restart, r",
+			Name:  "restart",
 			Usage: "restart service",
 		},
 		&cli.IntFlag{
