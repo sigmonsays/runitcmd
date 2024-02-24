@@ -22,16 +22,19 @@ func initSetup(app *Application) *cli.Command {
 			Usage:   "service name",
 		},
 		&cli.BoolFlag{
-			Name:  "verbose, v",
-			Usage: "be verbose",
+			Name:    "verbose",
+			Aliases: []string{"v"},
+			Usage:   "be verbose",
 		},
 		&cli.BoolFlag{
-			Name:  "enable, e",
-			Usage: "setup service and enable it",
+			Name:    "enable",
+			Aliases: []string{"e"},
+			Usage:   "setup service and enable it",
 		},
 		&cli.BoolFlag{
-			Name:  "disable, d",
-			Usage: "setup service but do not enable it",
+			Name:    "disable",
+			Aliases: []string{"d"},
+			Usage:   "setup service but do not enable it",
 		},
 		&cli.StringFlag{
 			Name:    "run",
@@ -43,24 +46,28 @@ func initSetup(app *Application) *cli.Command {
 			Usage: "service log command",
 		},
 		&cli.StringSliceFlag{
-			Name:  "script",
-			Usage: "additional lines to execute before run",
+			Name:    "script",
+			Aliases: []string{"s"},
+			Usage:   "additional lines to execute before run",
 		},
 		&cli.BoolFlag{
-			Name:  "restart, r",
+			Name:  "restart",
 			Usage: "restart service",
 		},
 		&cli.IntFlag{
-			Name:  "uid, u",
-			Usage: "user id",
+			Name:    "uid",
+			Aliases: []string{"u"},
+			Usage:   "user id",
 		},
 		&cli.IntFlag{
-			Name:  "gid, g",
-			Usage: "group id",
+			Name:    "gid",
+			Aliases: []string{"g"},
+			Usage:   "group id",
 		},
 		&cli.StringFlag{
-			Name:  "template, t",
-			Usage: "service template to use (does nothing, legacy only)",
+			Name:    "template",
+			Aliases: []string{"t"},
+			Usage:   "service template to use (does nothing, legacy only)",
 		},
 	}
 

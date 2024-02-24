@@ -36,13 +36,15 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
-			Name:  "config, c",
-			Usage: "override configuration file",
+			Name:    "config",
+			Aliases: []string{"c"},
+			Usage:   "override configuration file",
 		},
 		&cli.StringFlag{
-			Name:  "level, l",
-			Value: "WARN",
-			Usage: "change log level",
+			Name:    "level",
+			Aliases: []string{"l"},
+			Value:   "WARN",
+			Usage:   "change log level",
 		},
 		&cli.StringFlag{
 			Name:    "log-dir",

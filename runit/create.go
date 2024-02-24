@@ -13,8 +13,7 @@ func DefaultCreateOptions() *CreateOptions {
 type CreateOptions struct {
 	Force   bool
 	Restart bool
-
-	Script []string
+	Script  []string
 }
 
 func (opts *CreateOptions) WithScript(lines []string) *CreateOptions {
