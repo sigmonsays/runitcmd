@@ -39,8 +39,9 @@ func main() {
 			Usage: "change log level",
 		},
 		&cli.StringFlag{
-			Name:  "service-dir",
-			Usage: "change service dir",
+			Name:    "service-dir",
+			Usage:   "change service dir",
+			EnvVars: []string{"SERVICE_DIR"},
 		},
 		&cli.StringFlag{
 			Name:  "active-dir",
