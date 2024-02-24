@@ -92,7 +92,7 @@ example user configuration:
 
 Setup a service (and start it)
 
-    runitcmd setup sleep --run 'sleep 3600'
+    runitcmd setup --run 'sleep 3600' sleep
 
 Stop/start service
 

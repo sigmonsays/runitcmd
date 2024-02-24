@@ -16,6 +16,11 @@ func initSetup(app *Application) *cli.Command {
 	usage := "setup a service"
 
 	flags := []cli.Flag{
+		&cli.StringFlag{
+			Name:    "name",
+			Aliases: []string{"n"},
+			Usage:   "service name",
+		},
 		&cli.BoolFlag{
 			Name:  "verbose, v",
 			Usage: "be verbose",
@@ -29,8 +34,9 @@ func initSetup(app *Application) *cli.Command {
 			Usage: "setup service but do not enable it",
 		},
 		&cli.StringFlag{
-			Name:  "run",
-			Usage: "run command",
+			Name:    "run",
+			Aliases: []string{"r"},
+			Usage:   "run command",
 		},
 		&cli.StringFlag{
 			Name:  "log-run",
@@ -85,6 +91,9 @@ func (app *Application) Setup(c *cli.Context) error {
 
 	args := c.Args()
 	name := args.First()
+	if name == "" {
+		name = c.String("name")
+	}
 
 	log.Tracef("setup service-dir:%s active-dir:%s log-dir:%s",
 		service_dir, active_dir, log_dir)
