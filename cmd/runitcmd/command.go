@@ -10,6 +10,9 @@ import (
 )
 
 func makeCommand(app *Application, name, action, description string) *cli.Command {
+	if action == "" {
+		action = "name"
+	}
 	cmd := &cli.Command{
 		Name:        name,
 		Usage:       name + " a service",
