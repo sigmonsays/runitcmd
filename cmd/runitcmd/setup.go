@@ -26,16 +26,6 @@ func initSetup(app *Application) *cli.Command {
 			Usage: "be verbose",
 		},
 		&cli.StringFlag{
-			Name:  "service-dir",
-			Usage: "service directory",
-			Value: runit.DefaultServiceDir,
-		},
-		&cli.StringFlag{
-			Name:  "active-service-dir",
-			Usage: "active service directory",
-			Value: runit.DefaultActiveDir,
-		},
-		&cli.StringFlag{
 			Name:  "log-dir",
 			Usage: "log to directory",
 		},
@@ -91,7 +81,7 @@ func (app *Application) Setup(c *cli.Context) error {
 	log_level := c.String("log-level")
 	verbose := c.Bool("verbose")
 	service_dir := c.String("service-dir")
-	active_dir := c.String("active-service-dir")
+	active_dir := c.String("active-dir")
 	log_dir := c.String("log-dir")
 	enable := c.Bool("enable")
 	disable := c.Bool("disable")
@@ -105,6 +95,8 @@ func (app *Application) Setup(c *cli.Context) error {
 
 	args := c.Args()
 	name := args.First()
+
+	log.Tracef("setup service-dir:%s active-dir:%s", service_dir, active_dir)
 
 	if verbose {
 		gologging.SetLogLevel("trace")
@@ -142,7 +134,7 @@ func (app *Application) Setup(c *cli.Context) error {
 
 	lcfg := runit.DefaultLoggingConfig()
 	if log_dir == "" {
-		lcfg.Directory = filepath.Join(runit.DefaultLogDir, name)
+		lcfg.Directory = filepath.Join(log_dir, name)
 	} else {
 		lcfg.Directory = log_dir
 	}

@@ -39,13 +39,20 @@ func main() {
 			Usage: "change log level",
 		},
 		&cli.StringFlag{
+			Name:    "log-dir",
+			Usage:   "change service dir",
+			EnvVars: []string{"LOG_DIR"},
+			Value:   runit.DefaultLogDir,
+		},
+		&cli.StringFlag{
 			Name:    "service-dir",
 			Usage:   "change service dir",
 			EnvVars: []string{"SERVICE_DIR"},
 		},
 		&cli.StringFlag{
-			Name:  "active-dir",
-			Usage: "change active service dir",
+			Name:    "active-dir",
+			Usage:   "change active service dir",
+			EnvVars: []string{"ACTIVE_SERVICE_DIR"},
 		},
 	}
 
