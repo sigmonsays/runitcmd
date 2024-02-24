@@ -142,33 +142,35 @@ func main() {
 		initExport(app),
 
 		// more commands
-		makeCommand("delete", app.Delete),
-		makeCommand("activate", app.Activate),
-		makeCommand("deactivate", app.Deactivate),
-		makeCommand("enable", app.Enable),
-		makeCommand("disable", app.Disable),
-		makeCommand("reset", app.Reset),
+		makeCommand(app, "delete", "", "delete service"),
+		makeCommand(app, "activate", "", "create service symlink"),
+		makeCommand(app, "deactivate", "", "delete service symlink"),
+		makeCommand(app, "enable", "", "enable service at boot"),
+		makeCommand(app, "disable", "", "disable service at boot"),
+		makeCommand(app, "reset", "", "reset service state"),
 
 		// commands
-		makeCommand("up", app.Up),
-		makeCommand("down", app.Down),
-		makeCommand("pause", app.Pause),
-		makeCommand("cont", app.Cont),
-		makeCommand("hup", app.Cont),
-		makeCommand("alarm", app.Cont),
-		makeCommand("interrupt", app.Cont),
-		makeCommand("quit", app.Quit),
-		makeCommand("usr1", app.Usr1),
-		makeCommand("usr2", app.Usr2),
-		makeCommand("term", app.Term),
-		makeCommand("kill", app.Kill),
+		makeCommand(app, "up", "", "bring service up"),
+		makeCommand(app, "down", "", "bring service down"),
+		makeCommand(app, "pause", "", "pause service"),
+
+		// signals
+		makeCommand(app, "cont", "", "send service CONT signal"),
+		makeCommand(app, "hup", "", "send service HUP signal"),
+		makeCommand(app, "alarm", "", "send service ALRM signal"),
+		makeCommand(app, "interrupt", "", "send service INT signal"),
+		makeCommand(app, "quit", "", "send service QUIT signal"),
+		makeCommand(app, "usr1", "1", "send service USR1 signal"),
+		makeCommand(app, "usr2", "2", "send service USR2 signal"),
+		makeCommand(app, "term", "", "send service TERM signal"),
+		makeCommand(app, "kill", "", "send service KILL signal"),
 
 		// lsb
-		makeCommand("start", app.Start),
-		makeCommand("stop", app.Stop),
-		makeCommand("reload", app.Reload),
-		makeCommand("restart", app.Restart),
-		makeCommand("shutdown", app.Shutdown),
+		makeCommand(app, "start", "", "start service"),
+		makeCommand(app, "stop", "", "stop service"),
+		makeCommand(app, "reload", "", "reload service config"),
+		makeCommand(app, "restart", "", "restsart service"),
+		makeCommand(app, "shutdown", "", "shutdown service"),
 	}
 
 	app.Run(os.Args)
