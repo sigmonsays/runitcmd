@@ -19,6 +19,12 @@ type Application struct {
 	Runit *runit.Runit
 }
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
 	c := cli.NewApp()
 	c.Name = "runitcmd"
