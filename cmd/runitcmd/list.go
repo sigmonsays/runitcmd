@@ -18,8 +18,9 @@ func initList(app *Application) *cli.Command {
 
 	flags := []cli.Flag{
 		&cli.BoolFlag{
-			Name:  "all, a",
-			Usage: "list all services",
+			Name:    "all",
+			Usage:   "list all services",
+			Aliases: []string{"a"},
 		},
 	}
 

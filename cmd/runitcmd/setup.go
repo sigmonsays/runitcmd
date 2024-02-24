@@ -55,16 +55,19 @@ func initSetup(app *Application) *cli.Command {
 			Usage: "restart service",
 		},
 		&cli.IntFlag{
-			Name:  "uid, u",
-			Usage: "user id",
+			Name:    "uid",
+			Aliases: []string{"u"},
+			Usage:   "user id",
 		},
 		&cli.IntFlag{
-			Name:  "gid, g",
-			Usage: "group id",
+			Name:    "gid",
+			Aliases: []string{"g"},
+			Usage:   "group id",
 		},
 		&cli.StringFlag{
-			Name:  "template, t",
-			Usage: "service template to use (does nothing, legacy only)",
+			Name:    "template",
+			Aliases: []string{"t"},
+			Usage:   "service template to use (does nothing, legacy only)",
 		},
 	}
 

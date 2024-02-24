@@ -14,8 +14,9 @@ func initApply(app *Application) *cli.Command {
 
 	flags := []cli.Flag{
 		&cli.BoolFlag{
-			Name:  "restart, r",
-			Usage: "restart service after changes",
+			Name:    "restart",
+			Aliases: []string{"r"},
+			Usage:   "restart service after changes",
 		},
 	}
 

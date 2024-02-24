@@ -14,24 +14,29 @@ func initCreate(app *Application) *cli.Command {
 
 	flags := []cli.Flag{
 		&cli.StringFlag{
-			Name:  "exec, e",
-			Usage: "execute command",
+			Name:    "exec",
+			Aliases: []string{"e"},
+			Usage:   "execute command",
 		},
 		&cli.StringFlag{
-			Name:  "log-dir, l",
-			Usage: "log to directory",
+			Name:    "log-dir",
+			Aliases: []string{"l"},
+			Usage:   "log to directory",
 		},
 		&cli.BoolFlag{
-			Name:  "disabled, d",
-			Usage: "create service but do not enable it",
+			Name:    "disabled",
+			Aliases: []string{"d"},
+			Usage:   "create service but do not enable it",
 		},
 		&cli.BoolFlag{
-			Name:  "force, f",
-			Usage: "force update the service if it already exists",
+			Name:    "force",
+			Aliases: []string{"f"},
+			Usage:   "force update the service if it already exists",
 		},
 		&cli.BoolFlag{
-			Name:  "restart, r",
-			Usage: "restart the service after creation if it already exists",
+			Name:    "restart",
+			Aliases: []string{"r"},
+			Usage:   "restart the service after creation if it already exists",
 		},
 	}
 
