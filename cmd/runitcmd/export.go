@@ -12,8 +12,9 @@ func initExport(app *Application) *cli.Command {
 
 	flags := []cli.Flag{
 		&cli.BoolFlag{
-			Name:  "forgiving, f",
-			Usage: "be forgiving and try to parse the runit files",
+			Name:    "forgiving",
+			Aliases: []string{"f"},
+			Usage:   "be forgiving and try to parse the runit files",
 		},
 	}
 
