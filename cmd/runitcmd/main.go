@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
@@ -58,8 +57,6 @@ func main() {
 	}
 
 	app.Before = func(c *cli.Context) error {
-
-		fmt.Printf("Set log level to %s\n", c.String("level"))
 		gologging.SetLogLevel(c.String("level"))
 
 		config_file := c.String("config")
