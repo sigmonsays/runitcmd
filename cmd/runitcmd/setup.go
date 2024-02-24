@@ -16,11 +16,6 @@ func initSetup(app *Application) *cli.Command {
 	usage := "setup a service"
 
 	flags := []cli.Flag{
-		&cli.StringFlag{
-			Name:  "log-level, l",
-			Usage: "log level",
-			Value: "warn",
-		},
 		&cli.BoolFlag{
 			Name:  "verbose, v",
 			Usage: "be verbose",
@@ -78,7 +73,6 @@ func initSetup(app *Application) *cli.Command {
 }
 
 func (app *Application) Setup(c *cli.Context) error {
-	log_level := c.String("log-level")
 	verbose := c.Bool("verbose")
 	service_dir := c.String("service-dir")
 	active_dir := c.String("active-dir")
@@ -100,9 +94,6 @@ func (app *Application) Setup(c *cli.Context) error {
 
 	if verbose {
 		gologging.SetLogLevel("trace")
-	}
-	if log_level != "" {
-		gologging.SetLogLevel(log_level)
 	}
 
 	// template does nothing
