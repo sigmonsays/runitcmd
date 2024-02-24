@@ -11,7 +11,7 @@ import (
 
 func makeCommand(app *Application, name, action, description string) *cli.Command {
 	if action == "" {
-		action = "name"
+		action = name
 	}
 	cmd := &cli.Command{
 		Name:        name,

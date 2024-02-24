@@ -20,10 +20,6 @@ func initSetup(app *Application) *cli.Command {
 			Name:  "verbose, v",
 			Usage: "be verbose",
 		},
-		&cli.StringFlag{
-			Name:  "log-dir",
-			Usage: "log to directory",
-		},
 		&cli.BoolFlag{
 			Name:  "enable, e",
 			Usage: "setup service and enable it",
@@ -90,12 +86,12 @@ func (app *Application) Setup(c *cli.Context) error {
 	args := c.Args()
 	name := args.First()
 
-	log.Tracef("setup service-dir:%s active-dir:%s", service_dir, active_dir)
+	log.Tracef("setup service-dir:%s active-dir:%s log-dir:%s",
+		service_dir, active_dir, log_dir)
 
 	if verbose {
 		gologging.SetLogLevel("trace")
 	}
-
 	// template does nothing
 
 	// make the runit api locally for these flags to function
@@ -124,11 +120,7 @@ func (app *Application) Setup(c *cli.Context) error {
 	log.Tracef("setup %s", name)
 
 	lcfg := runit.DefaultLoggingConfig()
-	if log_dir == "" {
-		lcfg.Directory = filepath.Join(log_dir, name)
-	} else {
-		lcfg.Directory = log_dir
-	}
+	lcfg.Directory = filepath.Join(log_dir, name)
 
 	var exec string
 	if uid != 0 || gid != 0 {
