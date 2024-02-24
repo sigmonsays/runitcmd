@@ -4,8 +4,8 @@ with pkgs;
 
 mkShell {
   buildInputs = [
-        go
-        gopls
+        #go
+        #gopls
         runit
   ];
 }
