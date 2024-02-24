@@ -21,7 +21,7 @@ func (runit *Runit) Apply(cfg *ServiceConfig) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(f, "#!/bin/bash\n")
+	fmt.Fprintf(f, "#!/usr/bin/env bash\n")
 	if cfg.RedirectStderr {
 		fmt.Fprintf(f, "exec 2>&1\n")
 	}
